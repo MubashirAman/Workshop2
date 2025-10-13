@@ -1,0 +1,93 @@
+#ifndef DISPLAYSEARCH_H
+#define DISPLAYSEARCH_H
+
+#include <iostream>
+#include <algorithm>
+#include "Student.h"
+using namespace std;
+
+class DisplaySearch {
+public:
+    static void displayAll(const vector<Student>& students) {
+        cout << "\n=== All Students ===\n";
+        if (students.empty()) {
+            cout << "No records found.\n";
+            return;
+        }
+        for (auto& s : students) {
+            cout << s.rollNumber << " | " << s.name
+                 << " | " << s.department
+                 << " | GPA: " << s.gpa << endl;
+        }
+    }
+
+    static void viewSpecific(const vector<Student>& students) {
+        int roll;
+        cout << "Enter roll number: ";
+        cin >> roll;
+
+        for (auto& s : students) {
+            if (s.rollNumber == roll) {
+                cout << s.rollNumber << " | " << s.name
+                     << " | " << s.department
+                     << " | GPA: " << s.gpa << endl;
+                return;
+            }
+        }
+        cout << "❌ Student not found.\n";
+    }
+
+    static void searchByName(const vector<Student>& students) {
+        string name;
+        cout << "Enter name to search: ";
+        cin.ignore();
+        getline(cin, name);
+
+        bool found = false;
+        for (auto& s : students) {
+            if (s.name == name) {
+                cout << s.rollNumber << " | " << s.name
+                     << " | " << s.department
+                     << " | GPA: " << s.gpa << endl;
+                found = true;
+            }
+        }
+        if (!found) cout << "❌ No student found with that name.\n";
+    }
+
+    static void searchByDepartment(const vector<Student>& students) {
+        string dept;
+        cout << "Enter department to search: ";
+        cin.ignore();
+        getline(cin, dept);
+
+        bool found = false;
+        for (auto& s : students) {
+            if (s.department == dept) {
+                cout << s.rollNumber << " | " << s.name
+                     << " | " << s.department
+                     << " | GPA: " << s.gpa << endl;
+                found = true;
+            }
+        }
+        if (!found) cout << "❌ No students in that department.\n";
+    }
+
+    static void sortByGPA(vector<Student>& students) {
+        sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
+            return a.gpa > b.gpa;
+        });
+        cout << "✅ Sorted by GPA.\n";
+        displayAll(students);
+    }
+
+    static void sortByRoll(vector<Student>& students) {
+        sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
+            return a.rollNumber < b.rollNumber;
+        });
+        cout << "✅ Sorted by Roll Number.\n";
+        displayAll(students);
+    }
+};
+
+#endif
